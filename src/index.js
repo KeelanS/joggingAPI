@@ -40,7 +40,7 @@ api.listen(3000, () => {
     console.log('API up and running on port 3000!');
 });
 
-// API GET METHODS
+// RACES
 
 api.get('/races', (req, res) => {
    connection.query('SELECT * FROM race', (error, results) => {
@@ -50,16 +50,27 @@ api.get('/races', (req, res) => {
    })
 });
 
-api.get('/races/:id', (req, res) => {
+api.post('/races', (req, res) => {
+    connection.query('INSERT INTO race (raceName) VALUES (?)', [req.body.name], (error, results) => {
+        if (error) return res.json({error: error});
+
+        //Finds out what id the database gave the new race and returns that race
+        connection.query('SELECT LAST_INSERT_ID() FROM race LIMIT 1', (error, results) => {
+            if (error) return res.json({error: error});
+
+            return res.json({
+                raceName: req.body.name,
+                raceId: results[0]['LAST_INSERT_ID()'],
+            });
+        })
+    })
+ });
+
+// RUNNERS
+api.get('/runners/:id', (req, res) => {
     connection.query('SELECT * FROM runner WHERE race_id = ?', [req.params.id], (error, results) => {
         if (error) return res.json({error: error});
 
-        res.json({results});
+        res.json(results);
     })
-})
-
-api.post('/races/add', (req, res) => {
-    console.log(req.body);
-
-    //TODO
- });
+});
