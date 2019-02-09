@@ -74,4 +74,19 @@ api.get('/runners/:id', (req, res) => {
         res.json(results);
     })
 });
-// github username test
+
+api.post('/runners', (req, res) => {
+    connection.query('INSERT INTO runner (startNumber, name, gender, race_id) VALUES (?, ?, ?, ?)', 
+        [req.body.startNumber, req.body.name, req.body.gender, req.body.race_id],
+        (error, results) => {
+            if (error) return res.json({error: error});
+
+            return res.json({
+                startNumber: req.body.startNumber,
+                name: req.body.name,
+                gender: req.body.gender,
+                finish: null,
+                race_id: req.body.race_id
+            })
+        })
+})
