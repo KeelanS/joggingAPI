@@ -79,6 +79,15 @@ api.get('/races/:id/runners', (req, res) => {
     })
 });
 
+// Delete a race given his id
+api.post('/races/:id/remove', (req, res) => {
+    connection.query('DELETE FROM race WHERE raceId = ?', [req.params.id], (error, results) => {
+        if (error) return res.json({error: error});
+
+        res.json({});
+    })
+})
+
 // RUNNERS
 
 /** Add a runner to the database with the correct values
