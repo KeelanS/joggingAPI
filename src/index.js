@@ -42,6 +42,7 @@ api.listen(3000, () => {
 
 // RACES
 
+// Gives back all races without their runners
 api.get('/races', (req, res) => {
    connection.query('SELECT * FROM race', (error, results) => {
        if (error) return res.json({error: error});
@@ -50,6 +51,9 @@ api.get('/races', (req, res) => {
    })
 });
 
+/** Insert a race into the database
+ *  Only gets a string 'name'
+*/
 api.post('/races', (req, res) => {
     connection.query('INSERT INTO race (raceName) VALUES (?)', [req.body.name], (error, results) => {
         if (error) return res.json({error: error});
@@ -66,8 +70,8 @@ api.post('/races', (req, res) => {
     })
  });
 
-// RUNNERS
-api.get('/runners/:id', (req, res) => {
+ // Gives back the runners of a race given his id
+api.get('/races/:id/runners', (req, res) => {
     connection.query('SELECT * FROM runner WHERE race_id = ?', [req.params.id], (error, results) => {
         if (error) return res.json({error: error});
 
@@ -75,6 +79,11 @@ api.get('/runners/:id', (req, res) => {
     })
 });
 
+// RUNNERS
+
+/** Add a runner to the database with the correct values
+ *  Every runner has a finish time of null when added to the database
+ */ 
 api.post('/runners', (req, res) => {
     connection.query('INSERT INTO runner (startNumber, name, gender, race_id) VALUES (?, ?, ?, ?)', 
         [req.body.startNumber, req.body.name, req.body.gender, req.body.race_id],
@@ -89,4 +98,13 @@ api.post('/runners', (req, res) => {
                 race_id: req.body.race_id
             })
         })
+})
+
+// Deletes a runner given his startNumber
+api.post('/runners/:id/remove', (req, res) => {
+    connection.query('DELETE FROM runner WHERE startNumber = ?', [req.params.id], (error, results) => {
+        if (error) return res.json({error: error});
+
+        res.json({});
+    })
 })
