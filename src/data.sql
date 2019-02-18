@@ -22,12 +22,12 @@ insert into race (raceName) values ("2011");
 insert into race (raceName) values ("2012");
 
 insert into runner (startNumber, name, gender, race_id) values (1, "Pom", 'M', 1);
-insert into runner (startNumber, name, gender, race_id) values (2, "Pam", 'F', 1);
+insert into runner (startNumber, name, gender, race_id) values (2, "Pam", 'V', 1);
 insert into runner (startNumber, name, gender, race_id) values (3, "Pim", 'M', 1);
 
 insert into runner (startNumber, name, gender, race_id) values (4, "Tom", 'M', 2);
-insert into runner (startNumber, name, gender, race_id) values (5, "Tam", 'F', 2);
+insert into runner (startNumber, name, gender, race_id) values (5, "Tam", 'V', 2);
 insert into runner (startNumber, name, gender, race_id) values (6, "Tim", 'M', 2);
 
-insert into runner (startNumber, name, gender, race_id) values (7, "Hee", 'F', 3);
-insert into runner (startNumber, name, gender, race_id) values (8, "Jij", 'F', 3);
+insert into runner (startNumber, name, gender, race_id) values (7, "Hee", 'V', 3);
+insert into runner (startNumber, name, gender, race_id) values (8, "Jij", 'V', 3);
