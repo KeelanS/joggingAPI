@@ -13,7 +13,7 @@ CREATE TABLE `runner` (
   `race_id` int(11) NOT NULL,
   PRIMARY KEY (`runnerId`),
   KEY `fk_race` (`race_id`),
-  CONSTRAINT `runner_ibfk_1` FOREIGN KEY (`race_id`) REFERENCES `race` (`raceId`) ON UPDATE CASCADE
+  CONSTRAINT `runner_ibfk_1` FOREIGN KEY (`race_id`) REFERENCES `race` (`raceId`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 

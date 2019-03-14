@@ -104,7 +104,8 @@ api.post('/runners', (req, res) => {
                 name: req.body.name,
                 gender: req.body.gender,
                 finish: null,
-                race_id: req.body.race_id
+                race_id: req.body.race_id,
+                ranking: null
             })
         })
 })
@@ -116,4 +117,22 @@ api.post('/runners/:id/remove', (req, res) => {
 
         res.json({});
     })
+})
+
+api.put('/runners/:id', (req, res) => {
+    connection.query('UPDATE runner SET name=?, gender=?, finish=?, ranking=? WHERE startNumber=?', 
+    [req.body.name, req.body.gender, req.body.finish, req.body.ranking, req.body.startNumber],
+    (error, results) => {
+        if (error) return res.json({error: error});
+
+        return res.json({
+            startNumber: req.body.startNumber,
+            name: req.body.name,
+            gender: req.body.gender,
+            finish: req.body.finish,
+            race_id: req.body.race_id,
+            ranking: req.body.ranking
+        })
+    }
+    )
 })
