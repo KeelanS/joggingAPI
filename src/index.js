@@ -136,3 +136,17 @@ api.put('/runners/:id', (req, res) => {
     }
     )
 })
+
+api.put('/runners', (req, res) => {
+    for (let i = 0; i < req.body.length; i++) {
+        let runner = req.body[i];
+        connection.query('UPDATE runner SET finish=?, ranking=? WHERE startNumber=?',
+        [runner.finish, runner.ranking, runner.startNumber],
+        (error, results) => {
+            if (error) return res.json({error: error});
+
+            
+        })
+    }
+    return res.json({});
+})
