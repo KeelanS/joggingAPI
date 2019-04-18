@@ -71,7 +71,7 @@ api.post('/races', (req, res) => {
  });
 
  // Gives back the runners of a race given his id
-api.get('/races/:id/runners', (req, res) => {
+api.get('/races/:id', (req, res) => {
     connection.query('SELECT * FROM runner WHERE race_id = ?', [req.params.id], (error, results) => {
         if (error) return res.json({error: error});
 
@@ -80,7 +80,7 @@ api.get('/races/:id/runners', (req, res) => {
 });
 
 // Delete a race given his id
-api.post('/races/:id/remove', (req, res) => {
+api.delete('/races/:id', (req, res) => {
     connection.query('DELETE FROM race WHERE raceId = ?', [req.params.id], (error, results) => {
         if (error) return res.json({error: error});
 
@@ -110,19 +110,25 @@ api.post('/runners', (req, res) => {
         })
 })
 
-// Deletes a runner given his startNumber
-api.post('/runners/:id/remove', (req, res) => {
-    connection.query('DELETE FROM runner WHERE startNumber = ?', [req.params.id], (error, results) => {
+// Deletes a runner on given runner object
+api.delete('/runners/:number/:race', (req, res) => {
+    let runner;
+    connection.query('SELECT * from runner WHERE startNumber = ? and race_id=?', [req.params.number, req.params.race], (error, results) => {
         if (error) return res.json({error: error});
 
-        res.json({});
+        runner = results
     })
+
+    connection.query('DELETE FROM runner WHERE startNumber = ? and race_id=?', [req.params.number, req.params.race], (error, results) => {
+        if (error) return res.json({error: error});
+    })
+    return res.json(results)
 })
 
-// Updates a runners name, gender finish and ranking on given startnumber
+// Updates a runners name, gender finish and ranking on give runner object
 api.put('/runners/:id', (req, res) => {
-    connection.query('UPDATE runner SET name=?, gender=?, finish=?, ranking=? WHERE startNumber=?', 
-    [req.body.name, req.body.gender, req.body.finish, req.body.ranking, req.body.startNumber],
+    connection.query('UPDATE runner SET name=?, gender=?, finish=?, ranking=? WHERE startNumber=? AND race_id=?', 
+    [req.body.name, req.body.gender, req.body.finish, req.body.ranking, req.body.startNumber, req.body.race_id],
     (error, results) => {
         if (error) return res.json({error: error});
 
@@ -142,8 +148,8 @@ api.put('/runners/:id', (req, res) => {
 api.put('/runners', (req, res) => {
     for (let i = 0; i < req.body.length; i++) {
         let runner = req.body[i];
-        connection.query('UPDATE runner SET finish=?, ranking=? WHERE startNumber=?',
-        [runner.finish, runner.ranking, runner.startNumber],
+        connection.query('UPDATE runner SET finish=?, ranking=? WHERE startNumber=? AND race_id=?',
+        [runner.finish, runner.ranking, runner.startNumber, runner.race_id],
         (error, results) => {
             if (error) return res.json({error: error});
 

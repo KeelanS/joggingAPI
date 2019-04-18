@@ -22,7 +22,7 @@ CREATE TABLE `runner` (
   `finish` time DEFAULT NULL,
   `race_id` int(11) NOT NULL,
   `ranking` int(11) DEFAULT NULL,
-  PRIMARY KEY (`startNumber`),
+  PRIMARY KEY (`startNumber`, `race_id`),
   KEY `runner_ibfk_1` (`race_id`),
   CONSTRAINT `runner_ibfk_1` FOREIGN KEY (`race_id`) REFERENCES `race` (`raceId`) ON DELETE CASCADE ON UPDATE CASCADE
 )
